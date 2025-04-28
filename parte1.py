@@ -11,193 +11,193 @@ plt.style.use('seaborn-v0_8-whitegrid')
 colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
 
 def main():
-    # --------------------
-    # Exemplo 1: Regressão
-    # --------------------
-    # Carrega os dados (aerogerador.dat) - ajusta o caminho se necessário
-    data = np.loadtxt("aerogerador.dat")
-    X_reg = data[:, 0].reshape(-1, 1)
-    y_reg = data[:, 1]
+    # # --------------------
+    # # Exemplo 1: Regressão
+    # # --------------------
+    # # Carrega os dados (aerogerador.dat) - ajusta o caminho se necessário
+    # data = np.loadtxt("aerogerador.dat")
+    # X_reg = data[:, 0].reshape(-1, 1)
+    # y_reg = data[:, 1]
 
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6)
-    plt.title('Dispersão dos Dados do Aerogerador')
-    plt.xlabel('Velocidade do Vento')
-    plt.ylabel('Potência Gerada')
-    plt.grid(True)
-    plt.show()
+    # plt.figure(figsize=(10, 6))
+    # sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6)
+    # plt.title('Dispersão dos Dados do Aerogerador')
+    # plt.xlabel('Velocidade do Vento')
+    # plt.ylabel('Potência Gerada')
+    # plt.grid(True)
+    # plt.show()
 
-    # Define parâmetros do modelo (SGDRegressor como ADALINE)
-    reg_params = {
-        "learning_rate": 0.01,
-        "epochs": 100,
-        "tol": 1e-5
-    }
+    # # Define parâmetros do modelo (SGDRegressor como ADALINE)
+    # reg_params = {
+    #     "learning_rate": 0.01,
+    #     "epochs": 100,
+    #     "tol": 1e-5
+    # }
     
-    # Avaliação Monte Carlo
-    reg_results = monte_carlo_evaluation(
-        model_class=Adaline,
-        model_params=reg_params,
-        X=X_reg,
-        y=y_reg,
-        n_iterations=100,
-        test_size=0.2,
-        is_classification=False
-    )
+    # # Avaliação Monte Carlo
+    # reg_results = monte_carlo_evaluation(
+    #     model_class=Adaline,
+    #     model_params=reg_params,
+    #     X=X_reg,
+    #     y=y_reg,
+    #     n_iterations=100,
+    #     test_size=0.2,
+    #     is_classification=False
+    # )
 
-    # Exibe resultados detalhados
-    print("\nResultados da Regressão para Adeline:")
-    print(f"MSE Médio: {reg_results['mean_mse']:.4f} ± {reg_results['std_mse']:.4f}")
-    print(f"MSE Mínimo: {reg_results['min_mse']:.4f}")
-    print(f"MSE Máximo: {reg_results['max_mse']:.4f}")
+    # # Exibe resultados detalhados
+    # print("\nResultados da Regressão para Adeline:")
+    # print(f"MSE Médio: {reg_results['mean_mse']:.4f} ± {reg_results['std_mse']:.4f}")
+    # print(f"MSE Mínimo: {reg_results['min_mse']:.4f}")
+    # print(f"MSE Máximo: {reg_results['max_mse']:.4f}")
 
-    adaline_model = Adaline(learning_rate=0.01, epochs=100, tol=1e-5)
-    adaline_model.fit(X_reg, y_reg)
+    # adaline_model = Adaline(learning_rate=0.01, epochs=100, tol=1e-5)
+    # adaline_model.fit(X_reg, y_reg)
 
-    # Predictions from the model
-    y_pred = adaline_model.predict(X_reg)
+    # # Predictions from the model
+    # y_pred = adaline_model.predict(X_reg)
 
-    # Plot real data and model predictions on the same scatterplot
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
-    sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
-    plt.title('Comparação entre Dados Reais e Previsões do Modelo')
-    plt.xlabel('Velocidade do Vento')
-    plt.ylabel('Potência Gerada')
-    plt.grid(True)
-    plt.legend()
-    plt.show()
+    # # Plot real data and model predictions on the same scatterplot
+    # plt.figure(figsize=(10, 6))
+    # sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
+    # sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
+    # plt.title('Comparação entre Dados Reais e Previsões do Modelo')
+    # plt.xlabel('Velocidade do Vento')
+    # plt.ylabel('Potência Gerada')
+    # plt.grid(True)
+    # plt.legend()
+    # plt.show()
 
-    mlp_reg_params = {
-        "hidden_layers": (2,),
-        "activation": 'linear',
-        "learning_rate": 0.01,
-        "epochs": 100,
-        "tol": 1e-5
-    }
+    # mlp_reg_params = {
+    #     "hidden_layers": (2,),
+    #     "activation": 'sigmoid',
+    #     "learning_rate": 0.01,
+    #     "epochs": 100,
+    #     "tol": 1e-5
+    # }
 
-    # Avaliação Monte Carlo para MLP Underfitting
-    mlp_underfitting_results = monte_carlo_evaluation(
-        model_class=MLP,
-        model_params=mlp_reg_params,
-        X=X_reg,
-        y=y_reg,
-        n_iterations=100,
-        test_size=0.2,
-        is_classification=False
-    )
+    # # Avaliação Monte Carlo para MLP Underfitting
+    # mlp_underfitting_results = monte_carlo_evaluation(
+    #     model_class=MLP,
+    #     model_params=mlp_reg_params,
+    #     X=X_reg,
+    #     y=y_reg,
+    #     n_iterations=100,
+    #     test_size=0.2,
+    #     is_classification=False
+    # )
 
-    # Exibe resultados detalhados para MLP Underfitting
-    print("\nResultados da Regressão para MLP Underfitting:")
-    print(f"MSE Médio: {mlp_underfitting_results['mean_mse']:.4f} ± {mlp_underfitting_results['std_mse']:.4f}")
-    print(f"MSE Mínimo: {mlp_underfitting_results['min_mse']:.4f}")
-    print(f"MSE Máximo: {mlp_underfitting_results['max_mse']:.4f}")
+    # # Exibe resultados detalhados para MLP Underfitting
+    # print("\nResultados da Regressão para MLP Underfitting:")
+    # print(f"MSE Médio: {mlp_underfitting_results['mean_mse']:.4f} ± {mlp_underfitting_results['std_mse']:.4f}")
+    # print(f"MSE Mínimo: {mlp_underfitting_results['min_mse']:.4f}")
+    # print(f"MSE Máximo: {mlp_underfitting_results['max_mse']:.4f}")
 
-    MLP_model = MLP(learning_rate=0.01, epochs=100, tol=1e-5, hidden_layers=(2,), activation='linear')
-    MLP_model.fit(X_reg, y_reg)
+    # MLP_model = MLP(learning_rate=0.01, epochs=100, tol=1e-5, hidden_layers=(2,), activation='sigmoid')
+    # MLP_model.fit(X_reg, y_reg)
 
-    # Predictions from the model
-    y_pred = MLP_model.predict(X_reg)
+    # # Predictions from the model
+    # y_pred = MLP_model.predict(X_reg)
 
-    # Plot real data and model predictions on the same scatterplot
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
-    sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
-    plt.title('Comparação entre Dados Reais e Previsões do Modelo')
-    plt.xlabel('Velocidade do Vento')
-    plt.ylabel('Potência Gerada')
-    plt.grid(True)
-    plt.legend()
-    plt.show()
+    # # Plot real data and model predictions on the same scatterplot
+    # plt.figure(figsize=(10, 6))
+    # sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
+    # sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
+    # plt.title('Comparação entre Dados Reais e Previsões do Modelo')
+    # plt.xlabel('Velocidade do Vento')
+    # plt.ylabel('Potência Gerada')
+    # plt.grid(True)
+    # plt.legend()
+    # plt.show()
 
-    mlp_reg_params = {
-        "hidden_layers": (50,25),
-        "activation": 'linear',
-        "learning_rate": 0.01,
-        "epochs": 100,
-        "tol": 1e-5
-    }
+    # mlp_reg_params = {
+    #     "hidden_layers": (50,25),
+    #     "activation": 'sigmoid',
+    #     "learning_rate": 0.01,
+    #     "epochs": 100,
+    #     "tol": 1e-5
+    # }
 
-    # Avaliação Monte Carlo para MLP Underfitting
-    mlp_overfitting_results = monte_carlo_evaluation(
-        model_class=MLP,
-        model_params=mlp_reg_params,
-        X=X_reg,
-        y=y_reg,
-        n_iterations=100,
-        test_size=0.2,
-        is_classification=False
-    )
+    # # Avaliação Monte Carlo para MLP Underfitting
+    # mlp_overfitting_results = monte_carlo_evaluation(
+    #     model_class=MLP,
+    #     model_params=mlp_reg_params,
+    #     X=X_reg,
+    #     y=y_reg,
+    #     n_iterations=100,
+    #     test_size=0.2,
+    #     is_classification=False
+    # )
 
-    # Exibe resultados detalhados para MLP Underfitting
-    print("\nResultados da Regressão para MLP Overfitting:")
-    print(f"MSE Médio: {mlp_overfitting_results['mean_mse']:.4f} ± {mlp_overfitting_results['std_mse']:.4f}")
-    print(f"MSE Mínimo: {mlp_overfitting_results['min_mse']:.4f}")
-    print(f"MSE Máximo: {mlp_overfitting_results['max_mse']:.4f}")
+    # # Exibe resultados detalhados para MLP Underfitting
+    # print("\nResultados da Regressão para MLP Overfitting:")
+    # print(f"MSE Médio: {mlp_overfitting_results['mean_mse']:.4f} ± {mlp_overfitting_results['std_mse']:.4f}")
+    # print(f"MSE Mínimo: {mlp_overfitting_results['min_mse']:.4f}")
+    # print(f"MSE Máximo: {mlp_overfitting_results['max_mse']:.4f}")
 
-    MLP_model = MLP(learning_rate=0.01, epochs=100, tol=1e-5, hidden_layers=(100,50,25, 10, 5), activation='linear')
-    MLP_model.fit(X_reg, y_reg)
+    # MLP_model = MLP(learning_rate=0.01, epochs=100, tol=1e-5, hidden_layers=(50,25), activation='sigmoid')
+    # MLP_model.fit(X_reg, y_reg)
 
-    # Predictions from the model
-    y_pred = MLP_model.predict(X_reg)
+    # # Predictions from the model
+    # y_pred = MLP_model.predict(X_reg)
 
-    # Plot real data and model predictions on the same scatterplot
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
-    sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
-    plt.title('Comparação entre Dados Reais e Previsões do Modelo')
-    plt.xlabel('Velocidade do Vento')
-    plt.ylabel('Potência Gerada')
-    plt.grid(True)
-    plt.legend()
-    plt.show()
+    # # Plot real data and model predictions on the same scatterplot
+    # plt.figure(figsize=(10, 6))
+    # sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
+    # sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
+    # plt.title('Comparação entre Dados Reais e Previsões do Modelo')
+    # plt.xlabel('Velocidade do Vento')
+    # plt.ylabel('Potência Gerada')
+    # plt.grid(True)
+    # plt.legend()
+    # plt.show()
 
-    # --------------------
-    # Exemplo 2: Classificação Spiral3D
-    # --------------------
-    # Carrega os dados do Spiral3d.csv
+    # # --------------------
+    # # Exemplo 2: Classificação Spiral3D
+    # # --------------------
+    # # Carrega os dados do Spiral3d.csv
     data = np.loadtxt("Spiral3d.csv", delimiter=',')
     X_spiral = data[:, :3]  # Primeiras três colunas como features
     y_spiral = data[:, 3]   # Quarta coluna como target
 
-    # Visualização 3D dos dados
-    fig = plt.figure(figsize=(10, 8))
-    ax = fig.add_subplot(111, projection='3d')
-    scatter = ax.scatter(X_spiral[:, 0], X_spiral[:, 1], X_spiral[:, 2], 
-                        c=y_spiral, cmap='viridis')
-    plt.colorbar(scatter)
-    ax.set_xlabel('Feature 1')
-    ax.set_ylabel('Feature 2')
-    ax.set_zlabel('Feature 3')
-    plt.title('Visualização 3D dos Dados Spiral')
-    plt.show()
+    # # Visualização 3D dos dados
+    # fig = plt.figure(figsize=(10, 8))
+    # ax = fig.add_subplot(111, projection='3d')
+    # scatter = ax.scatter(X_spiral[:, 0], X_spiral[:, 1], X_spiral[:, 2], 
+    #                     c=y_spiral, cmap='viridis')
+    # plt.colorbar(scatter)
+    # ax.set_xlabel('Feature 1')
+    # ax.set_ylabel('Feature 2')
+    # ax.set_zlabel('Feature 3')
+    # plt.title('Visualização 3D dos Dados Spiral')
+    # plt.show()
 
-    # 1. Perceptron
-    perceptron_params = {
-        "learning_rate": 0.01,
-        "epochs": 100,
-        "tol": 1e-5
-    }
+    # # 1. Perceptron
+    # perceptron_params = {
+    #     "learning_rate": 0.01,
+    #     "epochs": 100,
+    #     "tol": 1e-5
+    # }
 
-    perceptron_results = monte_carlo_evaluation(
-        model_class=Perceptron,
-        model_params=perceptron_params,
-        X=X_spiral,
-        y=y_spiral,
-        n_iterations=100,
-        test_size=0.2,
-        is_classification=True
-    )
+    # perceptron_results = monte_carlo_evaluation(
+    #     model_class=Perceptron,
+    #     model_params=perceptron_params,
+    #     X=X_spiral,
+    #     y=y_spiral,
+    #     n_iterations=100,
+    #     test_size=0.2,
+    #     is_classification=True
+    # )
 
-    print("\nResultados da Classificação para Perceptron:")
-    print(f"MSE Média: {perceptron_results['mean_accuracy']:.4f} ± {perceptron_results['std_accuracy']:.4f}")
-    print(f"MSE Mínima: {perceptron_results['min_accuracy']:.4f}")
-    print(f"MSE Máxima: {perceptron_results['max_accuracy']:.4f}")
+    # print("\nResultados da Classificação para Perceptron:")
+    # print(f"MSE Média: {perceptron_results['mean_accuracy']:.4f} ± {perceptron_results['std_accuracy']:.4f}")
+    # print(f"MSE Mínima: {perceptron_results['min_accuracy']:.4f}")
+    # print(f"MSE Máxima: {perceptron_results['max_accuracy']:.4f}")
 
-    # # 2. MLP
+    # # # 2. MLP
     # mlp_params = {
     #     "hidden_layers": (10,),
-    #     "activation": 'sigmoid',
+    #     "activation": 'tanh',
     #     "learning_rate": 0.01,
     #     "epochs": 100,
     #     "tol": 1e-5
@@ -218,31 +218,31 @@ def main():
     # print(f"Acurácia Mínima: {mlp_results['min_accuracy']:.4f}")
     # print(f"Acurácia Máxima: {mlp_results['max_accuracy']:.4f}")
 
-    # # 3. RBF
-    # rbf_params = {
-    #     "n_centers": 10,
-    #     "learning_rate": 0.01,
-    #     "epochs": 100,
-    #     "tol": 1e-5
-    # }
+    # 3. RBF
+    rbf_params = {
+        "n_centers": 10,
+        "learning_rate": 0.01,
+        "epochs": 100,
+        "tol": 1e-5
+    }
 
-    # rbf_results = monte_carlo_evaluation(
-    #     model_class=RBF,
-    #     model_params=rbf_params,
-    #     X=X_spiral,
-    #     y=y_spiral,
-    #     n_iterations=100,
-    #     test_size=0.2,
-    #     is_classification=True
-    # )
+    rbf_results = monte_carlo_evaluation(
+        model_class=RBF,
+        model_params=rbf_params,
+        X=X_spiral,
+        y=y_spiral,
+        n_iterations=100,
+        test_size=0.2,
+        is_classification=True
+    )
 
-    # print("\nResultados da Classificação para RBF:")
-    # print(f"Acurácia Média: {rbf_results['mean_accuracy']:.4f} ± {rbf_results['std_accuracy']:.4f}")
-    # print(f"Acurácia Mínima: {rbf_results['min_accuracy']:.4f}")
-    # print(f"Acurácia Máxima: {rbf_results['max_accuracy']:.4f}")
+    print("\nResultados da Classificação para RBF:")
+    print(f"Acurácia Média: {rbf_results['mean_accuracy']:.4f} ± {rbf_results['std_accuracy']:.4f}")
+    print(f"Acurácia Mínima: {rbf_results['min_accuracy']:.4f}")
+    print(f"Acurácia Máxima: {rbf_results['max_accuracy']:.4f}")
 
-    # # Plot learning curves for all models
-    # plt.figure(figsize=(15, 5))
+    # Plot learning curves for all models
+    plt.figure(figsize=(15, 5))
 
     # # Perceptron learning curve
     # plt.subplot(131)
@@ -323,7 +323,7 @@ def main():
 
     # mlp_params = {
     #     "hidden_layers": (10,),
-    #     "activation": 'sigmoid',
+    #     "activation": 'tanh',
     #     "learning_rate": 0.01,
     #     "epochs": 100,
     #     "tol": 1e-5

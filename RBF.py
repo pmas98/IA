@@ -298,3 +298,11 @@ class RBF:
             y_pred_class = np.argmax(y_pred, axis=1)
             y_true_class = np.argmax(y, axis=1)
             return np.mean(y_pred_class == y_true_class)  # Acurácia
+    
+    def predict_classes(self, X, threshold=0.5):        
+        y_pred = self.predict(X)
+        
+        if y_pred.ndim == 1 or y_pred.shape[1] == 1:  # Binary classification
+            return np.where(y_pred >= threshold, 1, -1)
+        else:  # Multi-class: return class with highest score
+            return np.argmax(y_pred, axis=1)

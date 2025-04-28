@@ -74,7 +74,7 @@ class Perceptron:
             
             # Calcular custo de validação se dados de validação foram fornecidos
             if X_val is not None and y_val is not None:
-                val_predictions = self.predict(X_val_b)
+                val_predictions = self.predict_classes(X_val_b)
                 val_errors = np.sum(val_predictions != y_val_copy)
                 val_cost = val_errors / len(y_val_copy)
                 self.val_cost_.append(val_cost)
@@ -90,7 +90,7 @@ class Perceptron:
         self.fitted = True
         
         # Update confusion matrix after training
-        y_pred = self.predict(X)
+        y_pred = self.predict_classes(X)
         y_true = y.reshape(-1)
         y_pred = y_pred.reshape(-1)
         n_classes = len(np.unique(np.concatenate([y_true, y_pred])))
@@ -107,13 +107,13 @@ class Perceptron:
             X = np.c_[np.ones((X.shape[0], 1)), X]
         return np.dot(X, self.w_)
     
-    def predict(self, X):
+    def predict_classes(self, X):
         """Retorna a classe predita após a função de ativação degrau"""
         return np.where(self.net_input(X) >= 0.0, 1, -1)
     
     def score(self, X, y):
         """Calcula a acurácia como proporção de amostras classificadas corretamente"""
-        return np.mean(self.predict(X) == y)
+        return np.mean(self.predict_classes(X) == y)
 
     def get_confusion_matrix(self, X, y):
         """
@@ -136,7 +136,7 @@ class Perceptron:
             raise Exception("Model not fitted yet")
             
         # Get predictions
-        y_pred = self.predict(X)
+        y_pred = self.predict_classes(X)
         
         # Ensure inputs are 1D arrays
         y_true = y.reshape(-1)

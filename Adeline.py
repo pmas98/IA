@@ -46,10 +46,6 @@ class Adaline:
                 val_errors_clipped = np.clip(val_errors, -1e10, 1e10)
                 val_cost = np.mean(val_errors_clipped**2) / 2.0
                 self.val_cost_.append(val_cost)
-           
-            if i > 0 and np.isfinite(self.train_cost_[-1]) and np.isfinite(self.train_cost_[-2]):
-                if abs(self.train_cost_[-1] - self.train_cost_[-2]) < self.tol:
-                    break
        
         self.fitted = True
         return self

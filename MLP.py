@@ -48,6 +48,12 @@ class MLP:
             if derivative:
                 return s * (1 - s)
             return s
+        if self.activation == 'tanh':
+            z_clipped = np.clip(z, -500, 500)
+            t = np.tanh(z_clipped)
+            if derivative:
+                return 1 - t**2
+            return t
         elif self.activation == 'linear':
             if derivative:
                 return np.ones_like(z)
@@ -169,10 +175,6 @@ class MLP:
                 act_val, _ = self._forward_pass(Xvn)
                 vcost = self._compute_cost(yvn, act_val[-1])
                 self.val_cost_.append(vcost)
-            if epoch > 0 and np.isfinite(self.cost_[-1]) and np.isfinite(self.cost_[-2]):
-                 if abs(self.cost_[-1] - self.cost_[-2]) < self.tol:
-                      print(f"Convergence tolerance reached at epoch {epoch+1}.")
-                      break
             elif not np.isfinite(cost):
                  print(f"Cost became non-finite ({cost}) at epoch {epoch+1}. Stopping training.")
                  break
@@ -210,3 +212,12 @@ class MLP:
 
     def get_confusion_matrix(self, X, y):
         raise NotImplementedError("Confusion matrix is not applicable for regression tasks.")
+
+    def predict_classes(self, X, threshold=0.5):        
+        y_pred = self.predict(X)
+        
+        if y_pred.ndim == 1 or y_pred.shape[1] == 1:  # Binary classification
+            return np.where(y_pred >= threshold, 1, -1)
+        else:  # Multi-class: return class with highest score
+            return np.argmax(y_pred, axis=1)
+    

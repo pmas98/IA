@@ -43,11 +43,11 @@ def calculate_confusion_matrix(y_true, y_pred, n_classes=None):
         cm[int(t), int(p)] += 1
     return cm
 
-def evaluate_model(model, X_train, y_train, X_test, y_test, is_classification=False):
-    y_train_pred = model.predict(X_train)
-    y_test_pred = model.predict(X_test)
-    
+def evaluate_model(model, X_train, y_train, X_test, y_test, is_classification=False):    
     if is_classification:
+        y_train_pred = model.predict_classes(X_train)
+        y_test_pred = model.predict_classes(X_test)
+
         accuracy = np.mean(y_test_pred == y_test)
         
         cm = calculate_confusion_matrix(y_test, y_test_pred)
@@ -74,6 +74,9 @@ def evaluate_model(model, X_train, y_train, X_test, y_test, is_classification=Fa
             'train_accuracy': np.mean(y_train_pred == y_train)
         }
     else:
+        y_train_pred = model.predict(X_train)
+        y_test_pred = model.predict(X_test)
+
         mse_train = np.mean((y_train - y_train_pred) ** 2)
         mse_test = np.mean((y_test - y_test_pred) ** 2)
         

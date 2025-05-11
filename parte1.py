@@ -5,16 +5,16 @@ from Adeline import Adaline
 from Perceptron import Perceptron
 from MLP import MLP
 from RBF import RBF
-from utils import monte_carlo_evaluation
+from utils import monte_carlo_evaluation, train_test_split
 # Definindo cores para os gráficos
 plt.style.use('seaborn-v0_8-whitegrid')
 colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd']
 
 def main():
-    # # --------------------
-    # # Exemplo 1: Regressão
-    # # --------------------
-    # # Carrega os dados (aerogerador.dat) - ajusta o caminho se necessário
+    # --------------------
+    # Exemplo 1: Regressão
+    # --------------------
+    # Carrega os dados (aerogerador.dat) - ajusta o caminho se necessário
     # data = np.loadtxt("aerogerador.dat")
     # X_reg = data[:, 0].reshape(-1, 1)
     # y_reg = data[:, 1]
@@ -69,8 +69,8 @@ def main():
     # plt.show()
 
     # mlp_reg_params = {
-    #     "hidden_layers": (2,),
-    #     "activation": 'sigmoid',
+    #     "hidden_layers": (1,),
+    #     "activation": 'tanh',
     #     "learning_rate": 0.01,
     #     "epochs": 100,
     #     "tol": 1e-5
@@ -93,26 +93,30 @@ def main():
     # print(f"MSE Mínimo: {mlp_underfitting_results['min_mse']:.4f}")
     # print(f"MSE Máximo: {mlp_underfitting_results['max_mse']:.4f}")
 
-    # MLP_model = MLP(learning_rate=0.01, epochs=100, tol=1e-5, hidden_layers=(2,), activation='sigmoid')
-    # MLP_model.fit(X_reg, y_reg)
-
-    # # Predictions from the model
-    # y_pred = MLP_model.predict(X_reg)
-
-    # # Plot real data and model predictions on the same scatterplot
+    # MLP_under = MLP(
+    #     hidden_layers=(2,),
+    #     activation='tanh',
+    #     learning_rate=0.01,
+    #     epochs=100,
+    #     tol=1e-5
+    # )
+    # X_train, X_val, y_train, y_val = train_test_split(X_reg, y_reg, test_size=0.2)
+    # model = MLP_under.fit(X_train, y_train, X_val, y_val)
     # plt.figure(figsize=(10, 6))
-    # sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
-    # sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
-    # plt.title('Comparação entre Dados Reais e Previsões do Modelo')
-    # plt.xlabel('Velocidade do Vento')
-    # plt.ylabel('Potência Gerada')
-    # plt.grid(True)
+    # plt.plot(model.cost_, label='Treinamento')
+    # if model.val_cost_:
+    #     plt.plot(model.val_cost_, label='Validação')
+    # plt.xlabel('Época')
+    # plt.ylabel('Custo (MSE / 2)')
+    # plt.title('MLP Curva de Aprendizado - Underfitting')
     # plt.legend()
+    # plt.grid(True)
+    # plt.tight_layout()
     # plt.show()
 
     # mlp_reg_params = {
-    #     "hidden_layers": (50,25),
-    #     "activation": 'sigmoid',
+    #     "hidden_layers": (128, 64, 32),
+    #     "activation": 'tanh',
     #     "learning_rate": 0.01,
     #     "epochs": 100,
     #     "tol": 1e-5
@@ -135,27 +139,31 @@ def main():
     # print(f"MSE Mínimo: {mlp_overfitting_results['min_mse']:.4f}")
     # print(f"MSE Máximo: {mlp_overfitting_results['max_mse']:.4f}")
 
-    # MLP_model = MLP(learning_rate=0.01, epochs=100, tol=1e-5, hidden_layers=(50,25), activation='sigmoid')
-    # MLP_model.fit(X_reg, y_reg)
 
-    # # Predictions from the model
-    # y_pred = MLP_model.predict(X_reg)
-
-    # # Plot real data and model predictions on the same scatterplot
+    # MLP_over = MLP(
+    #     hidden_layers=(128, 64, 32),
+    #     activation='tanh',
+    #     learning_rate=0.01,
+    #     epochs=100,
+    #     tol=1e-5
+    # )
+    # model = MLP_over.fit(X_train, y_train, X_val, y_val)
     # plt.figure(figsize=(10, 6))
-    # sns.scatterplot(x=X_reg.flatten(), y=y_reg, alpha=0.6, label="Dados Reais")
-    # sns.scatterplot(x=X_reg.flatten(), y=y_pred, alpha=0.6, label="Previsões do Modelo", color="red")
-    # plt.title('Comparação entre Dados Reais e Previsões do Modelo')
-    # plt.xlabel('Velocidade do Vento')
-    # plt.ylabel('Potência Gerada')
-    # plt.grid(True)
+    # plt.plot(model.cost_, label='Treinamento')
+    # if model.val_cost_:
+    #     plt.plot(model.val_cost_, label='Validação')
+    # plt.xlabel('Época')
+    # plt.ylabel('Custo (MSE / 2)')
+    # plt.title('MLP Curva de Aprendizado - Overfitting')
     # plt.legend()
+    # plt.grid(True)
+    # plt.tight_layout()
     # plt.show()
 
-    # # --------------------
-    # # Exemplo 2: Classificação Spiral3D
-    # # --------------------
-    # # Carrega os dados do Spiral3d.csv
+    # --------------------
+    # Exemplo 2: Classificação Spiral3D
+    # --------------------
+    # Carrega os dados do Spiral3d.csv
     data = np.loadtxt("Spiral3d.csv", delimiter=',')
     X_spiral = data[:, :3]  # Primeiras três colunas como features
     y_spiral = data[:, 3]   # Quarta coluna como target
@@ -166,9 +174,9 @@ def main():
     # scatter = ax.scatter(X_spiral[:, 0], X_spiral[:, 1], X_spiral[:, 2], 
     #                     c=y_spiral, cmap='viridis')
     # plt.colorbar(scatter)
-    # ax.set_xlabel('Feature 1')
-    # ax.set_ylabel('Feature 2')
-    # ax.set_zlabel('Feature 3')
+    # ax.set_xlabel('Posição eixo X')
+    # ax.set_ylabel('Posição eixo Y')
+    # ax.set_zlabel('Posição eixo Z')
     # plt.title('Visualização 3D dos Dados Spiral')
     # plt.show()
 
@@ -189,18 +197,24 @@ def main():
     #     is_classification=True
     # )
 
-    # print("\nResultados da Classificação para Perceptron:")
-    # print(f"MSE Média: {perceptron_results['mean_accuracy']:.4f} ± {perceptron_results['std_accuracy']:.4f}")
-    # print(f"MSE Mínima: {perceptron_results['min_accuracy']:.4f}")
-    # print(f"MSE Máxima: {perceptron_results['max_accuracy']:.4f}")
+    # print("\nResultados da Classificação para MLP:")
+    # print(f"Acurácia Média: {perceptron_results['mean_accuracy']:.4f} ± {perceptron_results['std_accuracy']:.4f}")
+    # print(f"Acurácia Mínima: {perceptron_results['min_accuracy']:.4f}")
+    # print(f"Acurácia Máxima: {perceptron_results['max_accuracy']:.4f}")
+    # print(f"Sensitividade Média: {perceptron_results['mean_sensitivity']:.4f} ± {perceptron_results['std_sensitivity']:.4f}")
+    # print(f"Sensitividade Mínima: {perceptron_results['min_sensitivity']:.4f}")
+    # print(f"Sensitividade Máxima: {perceptron_results['max_sensitivity']:.4f}")
+    # print(f"Especificidade Média: {perceptron_results['mean_specificity']:.4f} ± {perceptron_results['std_specificity']:.4f}")
+    # print(f"Especificidade Mínima: {perceptron_results['min_specificity']:.4f}")
+    # print(f"Especificidade Máxima: {perceptron_results['max_specificity']:.4f}")
 
-    # # # 2. MLP
+    # # 2. MLP
     # mlp_params = {
-    #     "hidden_layers": (10,),
+    #     "hidden_layers": (2,),
     #     "activation": 'tanh',
     #     "learning_rate": 0.01,
     #     "epochs": 100,
-    #     "tol": 1e-5
+    #     "task":'classification', 
     # }
 
     # mlp_results = monte_carlo_evaluation(
@@ -217,13 +231,92 @@ def main():
     # print(f"Acurácia Média: {mlp_results['mean_accuracy']:.4f} ± {mlp_results['std_accuracy']:.4f}")
     # print(f"Acurácia Mínima: {mlp_results['min_accuracy']:.4f}")
     # print(f"Acurácia Máxima: {mlp_results['max_accuracy']:.4f}")
+    # print(f"Sensitividade Média: {mlp_results['mean_sensitivity']:.4f} ± {mlp_results['std_sensitivity']:.4f}")
+    # print(f"Sensitividade Mínima: {mlp_results['min_sensitivity']:.4f}")
+    # print(f"Sensitividade Máxima: {mlp_results['max_sensitivity']:.4f}")
+    # print(f"Especificidade Média: {mlp_results['mean_specificity']:.4f} ± {mlp_results['std_specificity']:.4f}")
+    # print(f"Especificidade Mínima: {mlp_results['min_specificity']:.4f}")
+    # print(f"Especificidade Máxima: {mlp_results['max_specificity']:.4f}")
+
+    # MLP_under = MLP(
+    #     hidden_layers=(2,),
+    #     activation='tanh',
+    #     learning_rate=0.01,
+    #     epochs=100,
+    #     task='classification'
+    # )
+
+
+    # X_train, X_val, y_train, y_val = train_test_split(X_spiral, y_spiral, test_size=0.2)
+    # model = MLP_under.fit(X_train, y_train, X_val, y_val)
+
+    # accuracy = MLP_under.score(X_val, y_val)
+
+    # # Display results
+    # print(f"Validation Accuracy: {accuracy:.4f}\n")
+    # metrics = model.calculate_metrics(X_val, y_val)
+    # print(f"Validation Sensitivity: {metrics['sensitivity']:.4f}")
+    # print(f"Validation Specificity: {metrics['specificity']:.4f}")
+
+    # model.plot_learning_curve()
+
+    # mlp_params = {
+    #     "hidden_layers": (128, 64, 32),
+    #     "activation": 'tanh',
+    #     "learning_rate": 0.01,
+    #     "epochs": 100,
+    #     "task":'classification', 
+    # }
+
+    # mlp_overfitting_results = monte_carlo_evaluation(
+    #     model_class=MLP,
+    #     model_params=mlp_params,
+    #     X=X_spiral,
+    #     y=y_spiral,
+    #     n_iterations=100,
+    #     test_size=0.2,
+    #     is_classification=True
+    # )
+
+    # print("\nResultados da Classificação para MLP:")
+    # print(f"Acurácia Média: {mlp_overfitting_results['mean_accuracy']:.4f} ± {mlp_overfitting_results['std_accuracy']:.4f}")
+    # print(f"Acurácia Mínima: {mlp_overfitting_results['min_accuracy']:.4f}")
+    # print(f"Acurácia Máxima: {mlp_overfitting_results['max_accuracy']:.4f}")
+    # print(f"Sensitividade Média: {mlp_overfitting_results['mean_sensitivity']:.4f} ± {mlp_overfitting_results['std_sensitivity']:.4f}")
+    # print(f"Sensitividade Mínima: {mlp_overfitting_results['min_sensitivity']:.4f}")
+    # print(f"Sensitividade Máxima: {mlp_overfitting_results['max_sensitivity']:.4f}")
+    # print(f"Especificidade Média: {mlp_overfitting_results['mean_specificity']:.4f} ± {mlp_overfitting_results['std_specificity']:.4f}")
+    # print(f"Especificidade Mínima: {mlp_overfitting_results['min_specificity']:.4f}")
+    # print(f"Especificidade Máxima: {mlp_overfitting_results['max_specificity']:.4f}")
+
+
+    # MLP_classifier = MLP(
+    #     hidden_layers=(64, 32, 16),
+    #     activation='tanh',
+    #     learning_rate=0.01,
+    #     epochs=100,
+    #     task='classification'  # This is the key addition
+    # )
+
+    # X_train, X_val, y_train, y_val = train_test_split(X_spiral, y_spiral, test_size=0.2)
+    # model = MLP_classifier.fit(X_train, y_train, X_val, y_val)
+
+    # accuracy = MLP_classifier.score(X_val, y_val)
+
+    # # Display results
+    # print(f"Validation Accuracy: {accuracy:.4f}\n")
+    # metrics = model.calculate_metrics(X_val, y_val)
+    # print(f"Validation Sensitivity: {metrics['sensitivity']:.4f}")
+    # print(f"Validation Specificity: {metrics['specificity']:.4f}")
+
+    # model.plot_learning_curve()
 
     # 3. RBF
     rbf_params = {
-        "n_centers": 10,
+        "n_centers": 1,
         "learning_rate": 0.01,
         "epochs": 100,
-        "tol": 1e-5
+        "task": 'classification'
     }
 
     rbf_results = monte_carlo_evaluation(
@@ -236,13 +329,48 @@ def main():
         is_classification=True
     )
 
-    print("\nResultados da Classificação para RBF:")
+    print("\nResultados da Classificação para RBF Under:")
     print(f"Acurácia Média: {rbf_results['mean_accuracy']:.4f} ± {rbf_results['std_accuracy']:.4f}")
     print(f"Acurácia Mínima: {rbf_results['min_accuracy']:.4f}")
     print(f"Acurácia Máxima: {rbf_results['max_accuracy']:.4f}")
+    print(f"Sensitividade Média: {rbf_results['mean_sensitivity']:.4f} ± {rbf_results['std_sensitivity']:.4f}")
+    print(f"Sensitividade Mínima: {rbf_results['min_sensitivity']:.4f}")
+    print(f"Sensitividade Máxima: {rbf_results['max_sensitivity']:.4f}")
+    print(f"Especificidade Média: {rbf_results['mean_specificity']:.4f} ± {rbf_results['std_specificity']:.4f}")
+    print(f"Especificidade Mínima: {rbf_results['min_specificity']:.4f}")
+    print(f"Especificidade Máxima: {rbf_results['max_specificity']:.4f}")
+    rbf_results['best_model'].plot_confusion_matrix()
+    # 3. RBF
+    rbf_params = {
+        "n_centers": 25,
+        "learning_rate": 0.01,
+        "epochs": 100,
+        "task": 'classification'
+    }
 
-    # Plot learning curves for all models
-    plt.figure(figsize=(15, 5))
+    rbf_results = monte_carlo_evaluation(
+        model_class=RBF,
+        model_params=rbf_params,
+        X=X_spiral,
+        y=y_spiral,
+        n_iterations=100,
+        test_size=0.2,
+        is_classification=True
+    )
+
+    print("\nResultados da Classificação para RBF Over:")
+    print(f"Acurácia Média: {rbf_results['mean_accuracy']:.4f} ± {rbf_results['std_accuracy']:.4f}")
+    print(f"Acurácia Mínima: {rbf_results['min_accuracy']:.4f}")
+    print(f"Acurácia Máxima: {rbf_results['max_accuracy']:.4f}")
+    print(f"Sensitividade Média: {rbf_results['mean_sensitivity']:.4f} ± {rbf_results['std_sensitivity']:.4f}")
+    print(f"Sensitividade Mínima: {rbf_results['min_sensitivity']:.4f}")
+    print(f"Sensitividade Máxima: {rbf_results['max_sensitivity']:.4f}")
+    print(f"Especificidade Média: {rbf_results['mean_specificity']:.4f} ± {rbf_results['std_specificity']:.4f}")
+    print(f"Especificidade Mínima: {rbf_results['min_specificity']:.4f}")
+    print(f"Especificidade Máxima: {rbf_results['max_specificity']:.4f}")
+
+    # # Plot learning curves for all models
+    # plt.figure(figsize=(15, 5))
 
     # # Perceptron learning curve
     # plt.subplot(131)
@@ -310,8 +438,8 @@ def main():
     # adaline_results = monte_carlo_evaluation(
     #     model_class=Adaline,
     #     model_params=adaline_params,
-    #     X=X,
-    #     y=Y,
+    #     X=X.T,
+    #     y=Y.T,
     #     n_iterations=100,
     #     test_size=0.2,
     #     is_classification=True
